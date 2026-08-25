@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "create_sag:block/black_stained_packed_ice"
+  }
+}

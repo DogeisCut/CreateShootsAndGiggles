@@ -10,7 +10,10 @@ import dev.ryanhcode.sable.companion.SableCompanion;
 import dev.ryanhcode.sable.index.SableTags;
 import io.github.dogeiscut.sag.Sag;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.minecraft.world.level.block.Blocks;
@@ -71,16 +74,16 @@ public class SagBlocks {
     public static final BlockEntry<Block> pink_stained_blue_ice = blueIceBlock("pink_stained_blue_ice", "Pink Stained Blue Ice");
 
     public static final BlockEntry<Block> pykrete =  REGISTRATE.block("pykrete", Block::new)
-        .initialProperties(() -> Blocks.PACKED_ICE)
-        .properties(p -> p.strength(4, 4)
-                .friction(0.88f))
-        .loot(RegistrateBlockLootTables::dropWhenSilkTouch)
-        .transform(pickaxeOnly())
-        .tag(BlockTags.ICE)
-        .blockstate(simpleCubeAll("pykrete"))
-        .simpleItem()
-        .lang("Pykrete")
-        .register();
+            .initialProperties(() -> Blocks.PACKED_ICE)
+            .properties(p -> p.strength(4, 4)
+                    .friction(0.88f))
+            .loot(RegistrateBlockLootTables::dropWhenSilkTouch)
+            .transform(pickaxeOnly())
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "slippery")))
+            .blockstate(simpleCubeAll("pykrete"))
+            .simpleItem()
+            .lang("Pykrete")
+            .register();
 
     private static BlockEntry<IceBlock> iceBlock(String id, String name) {
         return REGISTRATE.block(id, IceBlock::new)
@@ -92,6 +95,8 @@ public class SagBlocks {
                 .tag(BlockTags.GEODE_INVALID_BLOCKS)
                 .tag(BlockTags.ICE)
                 .tag(BlockTags.POLAR_BEARS_SPAWNABLE_ON_ALTERNATE)
+                .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "slippery")))
+                .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "fragile")))
                 .tag()
                 .blockstate(simpleCubeAll(id))
                 .simpleItem()
@@ -109,6 +114,7 @@ public class SagBlocks {
                 .tag(BlockTags.GEODE_INVALID_BLOCKS)
                 .tag(BlockTags.ICE)
                 .tag(BlockTags.POLAR_BEARS_SPAWNABLE_ON_ALTERNATE)
+                .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "slippery")))
                 .blockstate(simpleCubeAll(id))
                 .simpleItem()
                 .lang(name)
@@ -125,6 +131,7 @@ public class SagBlocks {
                 .tag(BlockTags.GEODE_INVALID_BLOCKS)
                 .tag(BlockTags.ICE)
                 .tag(BlockTags.POLAR_BEARS_SPAWNABLE_ON_ALTERNATE)
+                .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "slippery")))
                 .blockstate(simpleCubeAll(id))
                 .simpleItem()
                 .lang(name)

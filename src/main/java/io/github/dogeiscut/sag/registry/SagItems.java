@@ -1,5 +1,6 @@
 package io.github.dogeiscut.sag.registry;
 
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.dogeiscut.sag.Sag;
@@ -13,6 +14,7 @@ public class SagItems {
     public static final ItemEntry<HandheldAirBlowerItem> HANDHELD_AIR_BLOWER = REGISTRATE.item("handheld_air_blower", HandheldAirBlowerItem::new)
             .properties(p -> p.rarity(Rarity.UNCOMMON))
             .tag(ItemTags.DURABILITY_ENCHANTABLE)
+            .model(AssetLookup.itemModelWithPartials())
             .register();
 
     public static void register() {
