@@ -34,6 +34,15 @@
     ],
     "subtitle": "create_sag.subtitle.air_blower_charge_light"
   },
+  "air_blower_charge_medium": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.breeze.wind_burst"
+      }
+    ],
+    "subtitle": "create_sag.subtitle.air_blower_charge_medium"
+  },
   "air_blower_explode": {
     "sounds": [
       {

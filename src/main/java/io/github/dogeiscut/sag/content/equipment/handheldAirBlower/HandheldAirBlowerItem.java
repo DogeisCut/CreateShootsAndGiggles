@@ -42,9 +42,8 @@ public class HandheldAirBlowerItem extends Item {
     // TODO:
     // - Fix bar flickering on charge
     // - Fix being able to store charge state by uncrouching while holding right click. (force unuse on uncrouch?)
-    // - Adjust charge sound events (custom sounds?)
     // - Increase wind charge speed for higher charge.
-    // - Decide if this should be useable without a backtank
+    // - Decide if this should be useable without a backtank (im going with no but i havent changed the code yet...)
     // - Blowing logic
     // - entity blowing interactions
     // - Sable sublevel interaction
@@ -52,6 +51,7 @@ public class HandheldAirBlowerItem extends Item {
     // - animations
     // - Air explosion self damage
     // - Fix missing subtitle translations
+    // - might need to store actual data on the item for some of this
 
     @Override
     @OnlyIn(Dist.CLIENT)
@@ -181,10 +181,13 @@ public class HandheldAirBlowerItem extends Item {
     private void handleCharging(Level level, Player player, int chargeTicks) {
         int minTicks = getMinChargeTicks();
         int maxTicks = getMaxChargeTicks();
+        int minChargeTicks = getMinChargeTicks();
         int overfillTicks = getOverfillExplodeTicks();
 
-        if (chargeTicks < maxTicks && chargeTicks % 5 == 0) {
+        if (chargeTicks < minChargeTicks && chargeTicks % 5 == 0) {
             SagSoundEvents.AIR_BLOWER_CHARGE_LIGHT.playFrom(player, 0.4f, 0.8f + ((float) chargeTicks / minTicks) * 0.4f);
+        } else if (chargeTicks >= minChargeTicks && chargeTicks < overfillTicks && chargeTicks % 4 == 0) {
+            SagSoundEvents.AIR_BLOWER_CHARGE_MEDIUM.playFrom(player, 0.6f, 0.9f + ((float) (chargeTicks - overfillTicks) / (minChargeTicks - maxTicks)) * 0.5f);
         } else if (chargeTicks >= maxTicks && chargeTicks <= overfillTicks && chargeTicks % 3 == 0) {
             SagSoundEvents.AIR_BLOWER_CHARGE_HEAVY.playFrom(player, 0.7f, 1.0f + ((float) (chargeTicks - maxTicks) / (overfillTicks - maxTicks)) * 0.5f);
         }

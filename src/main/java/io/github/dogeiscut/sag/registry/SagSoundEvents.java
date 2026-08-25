@@ -36,6 +36,12 @@ public class SagSoundEvents {
             .category(SoundSource.PLAYERS)
             .build(),
 
+    AIR_BLOWER_CHARGE_MEDIUM = create("air_blower_charge_medium")
+            .subtitle("Air blower charged")
+            .playExisting(SoundEvents.BREEZE_WIND_CHARGE_BURST.value(), 0.5f, 1.2f)
+            .category(SoundSource.PLAYERS)
+            .build(),
+
     AIR_BLOWER_CHARGE_HEAVY = create("air_blower_charge_heavy")
             .subtitle("Air blower overcharging")
             .playExisting(SoundEvents.WIND_CHARGE_BURST.value(), 0.6f, 0.6f)
