@@ -1,0 +1,8 @@
+// 1.21.1	2026-08-24T22:48:54.3897581	Registrate Provider for create_sag [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+7e352978aedce6e1d62f60c6edc4ccdfb9d8023b assets/create_sag/blockstates/white_stained_ice.json
+4a786314c2c9ee8392de808c10b49853cf57102f assets/create_sag/lang/en_ud.json
+709161dc49c8665a684b96f7223213a1d692e6bc assets/create_sag/lang/en_us.json
+486b75c57c89b5c837154a2fad48398fa36c82ff assets/create_sag/models/block/white_stained_ice.json
+3eb961f916ff8633f7812d24ef02161ab42f97e4 assets/create_sag/models/item/white_stained_ice.json
+b92c20ece0a50c4c1eba60ac28c5fc6e9b3838ea data/create_sag/loot_table/blocks/white_stained_ice.json
+dc7c91ca8edf91cd05aaa984a526cf0b83460733 data/minecraft/tags/block/mineable/pickaxe.json
