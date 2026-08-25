@@ -5,9 +5,7 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import io.github.dogeiscut.sag.registry.SagBlocks;
-import io.github.dogeiscut.sag.registry.SagItems;
-import io.github.dogeiscut.sag.registry.SagSoundEvents;
+import io.github.dogeiscut.sag.registry.*;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -15,9 +13,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
@@ -27,16 +23,16 @@ import org.slf4j.Logger;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mod(Sag.MODID)
+@Mod(Sag.ID)
 public class Sag {
-    public static final String MODID = "create_sag";
+    public static final String ID = "create_sag";
     public static final String NAME = "Create: Shoots and Giggles";
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
     private static final StackWalker STACK_WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 
-    private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID)
+    private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(ID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
             .setTooltipModifierFactory(item ->
                     new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
@@ -54,15 +50,19 @@ public class Sag {
         REGISTRATE.registerEventListeners(modEventBus);
         modEventBus.addListener(Sag::gatherData);
 
+        SagCreativeModeTabs.register(modEventBus);
+        SagDataComponents.register(modEventBus);
+
         SagSoundEvents.prepare();
         SagItems.register();
         SagBlocks.register();
+        SagPackets.register();
 
         modEventBus.addListener(SagSoundEvents::register);
     }
 
     public static void gatherData(GatherDataEvent evt) {
-        if (!evt.getMods().contains(MODID))
+        if (!evt.getMods().contains(ID))
             return;
 
         ExistingFileHelper helper = evt.getExistingFileHelper();
@@ -81,6 +81,6 @@ public class Sag {
     }
 
     public static ResourceLocation asResource(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(ID, path);
     }
 }

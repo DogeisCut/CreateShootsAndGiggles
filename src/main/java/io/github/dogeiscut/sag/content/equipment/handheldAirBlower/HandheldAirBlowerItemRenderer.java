@@ -9,6 +9,8 @@ import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import io.github.dogeiscut.sag.Sag;
 import io.github.dogeiscut.sag.SagClient;
 import net.createmod.catnip.animation.AnimationTickHolder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -24,8 +26,11 @@ public class HandheldAirBlowerItemRenderer extends CustomRenderedItemModelRender
 
         renderer.render(model.getOriginalModel(), light);
 
-        float angle = SagClient.BLOWER_RENDER_HANDLER.getSpinAngle(pt);
-
+        LocalPlayer player = Minecraft.getInstance().player;
+        boolean held = player != null && (player.getMainHandItem() == stack || player.getOffhandItem() == stack);
+        float angle = held
+                ? SagClient.HANDHELD_AIR_BLOWER_RENDER_HANDLER.getSpinAngle(pt)
+                : (AnimationTickHolder.getRenderTime() * -2.5f) % 360;
 
         ms.pushPose();
         float offset = -0.125F;

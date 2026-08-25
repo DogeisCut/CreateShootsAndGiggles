@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -58,6 +59,19 @@ public class HandheldAirBlowerRenderHandler extends ShootableGadgetRenderHandler
         spinSpeed = Mth.lerp(0.15F, spinSpeed, targetSpeed);
 
         spinAngle += spinSpeed;
+    }
+
+    public void blow(InteractionHand hand, Vec3 location) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        boolean rightHand = hand == InteractionHand.MAIN_HAND ^ player.getMainArm() == HumanoidArm.LEFT;
+        if (rightHand) {
+            rightHandAnimation = .08f;
+            dontReequipRight = false;
+        } else {
+            leftHandAnimation = .08f;
+            dontReequipLeft = false;
+        }
+        playSound(hand, location);
     }
 
     public float getPitch(float pt) {

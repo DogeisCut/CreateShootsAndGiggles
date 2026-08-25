@@ -1,9 +1,11 @@
 package io.github.dogeiscut.sag.content.equipment.handheldAirBlower;
 
 import com.simibubi.create.content.equipment.armor.BacktankUtil;
+import com.simibubi.create.content.equipment.zapper.ShootableGadgetItemMethods;
 import com.simibubi.create.foundation.item.CustomArmPoseItem;
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import io.github.dogeiscut.sag.SagClient;
+import io.github.dogeiscut.sag.registry.SagDataComponents;
 import io.github.dogeiscut.sag.registry.SagItems;
 import io.github.dogeiscut.sag.registry.SagSoundEvents;
 import net.minecraft.client.Minecraft;
@@ -18,6 +20,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -44,20 +47,31 @@ import java.util.function.Function;
 public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
     private static final ExplosionDamageCalculator EXPLOSION_DAMAGE_CALCULATOR;
     public static final int MAX_DAMAGE = 350;
+    private static final float MIN_SHOT_VELOCITY = 1.5f;
+    private static final float MAX_SHOT_VELOCITY = 3.0f;
 
     // TODO:
-    // - Fix bar flickering on charge sometimes
-    // - Fix being able to store charge state by uncrouching while holding right click. (force unuse on uncrouch and crouch?)
-    // - Increase wind charge speed for higher charge.
-    // - Decide if this should be useable without a backtank (im going with no but i havent changed the code yet...)
     // - Blowing logic
     // - entity blowing interactions
     // - Sable sublevel interaction
     // - particles
     // - Fix missing subtitle translations
-    // - fix animations being shared between all item instances
     // - shake animation as it overcharges
-    // - item SHIFT summary
+    // - "Hold [Shift] for Summary"
+    // - Custom overcharging death message
+    // - make charge bar not shared between item instances (backtank bar is fine, it's just like that)
+    // - investigate multiplayer
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (!(entity instanceof Player player)) return;
+
+        boolean crouching = player.isCrouching();
+        if (crouching != stack.getOrDefault(SagDataComponents.WAS_CROUCHING, false)) {
+            stack.set(SagDataComponents.WAS_CROUCHING, crouching);
+            player.stopUsingItem();
+        }
+    }
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
@@ -143,10 +157,9 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
 
     private boolean isChargingClient(ItemStack stack) {
         Player player = getClientPlayer();
-        if (player != null && player.isUsingItem() && player.getUseItem() == stack) {
-            return player.isCrouching();
-        }
-        return false;
+        return player != null && player.isUsingItem()
+                && SagItems.HANDHELD_AIR_BLOWER.isIn(player.getUseItem())
+                && player.isCrouching();
     }
 
     private Player getClientPlayer() {
@@ -191,17 +204,26 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         if (!(livingEntity instanceof Player player)) return;
 
-        int ticksUsed = livingEntity.getTicksUsingItem();
+        boolean crouching = player.isCrouching();
+        if (crouching != stack.getOrDefault(SagDataComponents.WAS_CROUCHING, false)) {
+            stack.set(SagDataComponents.WAS_CROUCHING, crouching);
+            player.stopUsingItem();
+            return;
+        }
 
+        int ticksUsed = livingEntity.getTicksUsingItem();
         if (player.isCrouching()) {
             handleCharging(level, player, ticksUsed);
         } else {
-            // TODO: Blowing logic...
-            if (remainingUseDuration % getDamageRate() == 0) {
-                findAndDamageHandheldAirBlower(player);
-            }
-            if (ticksUsed % 6 == 0) {
-                SagSoundEvents.AIR_BLOWER_BLOW.playFrom(player, 0.6f, 1.0f);
+            if (remainingUseDuration % getDamageRate() == 0) findAndDamageHandheldAirBlower(player);
+            if (!level.isClientSide) {
+                if (ticksUsed % 6 == 0) {
+                    SagSoundEvents.AIR_BLOWER_BLOW.playFrom(player, 0.6f, 1.0f);
+                }
+                InteractionHand hand = player.getUsedItemHand();
+
+                ShootableGadgetItemMethods.sendPackets(player,
+                        b -> new HandheldAirBlowerPacket(player.position(), hand, b, true));
             }
         }
     }
@@ -215,7 +237,7 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
         if (chargeTicks < minChargeTicks && chargeTicks % 5 == 0) {
             SagSoundEvents.AIR_BLOWER_CHARGE_LIGHT.playFrom(player, 0.4f, 0.8f + ((float) chargeTicks / minTicks) * 0.4f);
         } else if (chargeTicks >= minChargeTicks && chargeTicks < overfillTicks && chargeTicks % 4 == 0) {
-            SagSoundEvents.AIR_BLOWER_CHARGE_MEDIUM.playFrom(player, 0.6f, 0.9f + ((float) (chargeTicks - overfillTicks) / (minChargeTicks - maxTicks)) * 0.5f);
+            SagSoundEvents.AIR_BLOWER_CHARGE_MEDIUM.playFrom(player, 0.6f, 0.9f + ((float) (chargeTicks - minChargeTicks) / (overfillTicks - minChargeTicks)) * 0.5f);
         } else if (chargeTicks >= maxTicks && chargeTicks <= overfillTicks && chargeTicks % 3 == 0) {
             SagSoundEvents.AIR_BLOWER_CHARGE_HEAVY.playFrom(player, 0.7f, 1.0f + ((float) (chargeTicks - maxTicks) / (overfillTicks - maxTicks)) * 0.5f);
         }
@@ -237,12 +259,19 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
                         ParticleTypes.GUST_EMITTER_LARGE,
                         SoundEvents.WIND_CHARGE_BURST
                 );
+
+                SagSoundEvents.AIR_BLOWER_EXPLODE.playFrom(player, 1.0f, 1.0f);
+                findAndDamageHandheldAirBlower(player, getOverfillItemDamage());
+                player.stopUsingItem();
+                player.getCooldowns().addCooldown(this, getOverchargeCooldownTicks());
+                player.hurt(damageSource, getOverchargeSelfDamage());
+
+                InteractionHand hand = player.getUsedItemHand();
+
+                ShootableGadgetItemMethods.sendPackets(player,
+                        b -> new HandheldAirBlowerPacket(player.position(), hand, b, false));
             }
-            SagSoundEvents.AIR_BLOWER_EXPLODE.playFrom(player, 1.0f, 1.0f);
-            findAndDamageHandheldAirBlower(player, getOverfillItemDamage());
-            player.stopUsingItem();
-            player.getCooldowns().addCooldown(this, getOverchargeCooldownTicks());
-            player.hurt(damageSource, getOverchargeSelfDamage());
+
         }
     }
 
@@ -263,18 +292,23 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
 
         if (player.isCrouching() && chargeTicks >= getMinChargeTicks()) {
             if (!level.isClientSide) {
+                //ShootableGadgetItemMethods.getGunBarrelVec()
+
+                InteractionHand hand = player.getUsedItemHand();
+
                 Vec3 look = player.getLookAngle();
                 WindCharge windCharge = new WindCharge(player, level, player.getX(), player.getEyeY() - 0.1, player.getZ());
-                windCharge.shoot(look.x, look.y, look.z, 1.5f, 1.0f);
+                float chargeFrac = Mth.clamp((float) (chargeTicks - getMinChargeTicks()) / (getMaxChargeTicks() - getMinChargeTicks()), 0f, 1f);
+                float velocity = Mth.lerp(chargeFrac, MIN_SHOT_VELOCITY, MAX_SHOT_VELOCITY);
+                windCharge.shoot(look.x, look.y, look.z, velocity, 1.0f);
                 level.addFreshEntity(windCharge);
-            } else {
-                InteractionHand hand = player.getMainHandItem() == stack ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-                SagClient.BLOWER_RENDER_HANDLER.shoot(hand, player.position());
-            }
 
-            findAndDamageHandheldAirBlower(player, getWindChargeItemDamage());
-            SagSoundEvents.AIR_BLOWER_SHOOT.playFrom(player, 1.0f, 1.0f);
-            player.getCooldowns().addCooldown(this, getWindChargeCooldownTicks());
+                findAndDamageHandheldAirBlower(player, getWindChargeItemDamage());
+                SagSoundEvents.AIR_BLOWER_SHOOT.playFrom(player, 1.0f, 1.0f);
+                player.getCooldowns().addCooldown(this, getWindChargeCooldownTicks());
+                ShootableGadgetItemMethods.sendPackets(player,
+                        b -> new HandheldAirBlowerPacket(player.position(), hand, b, false));
+            }
         }
     }
 

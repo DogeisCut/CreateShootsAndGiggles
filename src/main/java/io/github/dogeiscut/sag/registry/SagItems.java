@@ -11,6 +11,10 @@ import net.minecraft.world.item.Rarity;
 public class SagItems {
     private static final CreateRegistrate REGISTRATE = Sag.registrate();
 
+    static {
+        REGISTRATE.setCreativeTab(SagCreativeModeTabs.MAIN_TAB);
+    }
+
     public static final ItemEntry<HandheldAirBlowerItem> HANDHELD_AIR_BLOWER = REGISTRATE.item("handheld_air_blower", HandheldAirBlowerItem::new)
             .properties(p -> p.rarity(Rarity.UNCOMMON))
             .tag(ItemTags.DURABILITY_ENCHANTABLE)

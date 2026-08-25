@@ -109,7 +109,7 @@ public class SagSoundEvents {
 
         @Override
         public CompletableFuture<?> run(CachedOutput cache) {
-            Path path = this.output.getOutputFolder().resolve("assets/" + Sag.MODID);
+            Path path = this.output.getOutputFolder().resolve("assets/" + Sag.ID);
             JsonObject json = new JsonObject();
             ALL.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> entry.getValue().write(json));
             return DataProvider.saveStable(cache, json, path.resolve("sounds.json"));

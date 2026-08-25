@@ -8,19 +8,19 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
-@Mod(value = Sag.MODID, dist = Dist.CLIENT)
+@Mod(value = Sag.ID, dist = Dist.CLIENT)
 public class SagClient {
     public SagClient(IEventBus modEventBus) {
         onCtorClient(modEventBus);
     }
 
-    public static final HandheldAirBlowerRenderHandler BLOWER_RENDER_HANDLER = new HandheldAirBlowerRenderHandler();
+    public static final HandheldAirBlowerRenderHandler HANDHELD_AIR_BLOWER_RENDER_HANDLER = new HandheldAirBlowerRenderHandler();
     public static void onCtorClient(IEventBus modEventBus) {
         IEventBus neoEventBus = NeoForge.EVENT_BUS;
 
-        BLOWER_RENDER_HANDLER.registerListeners(neoEventBus);
+        HANDHELD_AIR_BLOWER_RENDER_HANDLER.registerListeners(neoEventBus);
 
-        neoEventBus.register(BLOWER_RENDER_HANDLER);
+        neoEventBus.register(HANDHELD_AIR_BLOWER_RENDER_HANDLER);
 
         modEventBus.addListener(SagClient::clientInit);
     }
