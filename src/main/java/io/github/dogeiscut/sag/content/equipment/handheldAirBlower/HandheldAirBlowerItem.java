@@ -1,10 +1,13 @@
 package io.github.dogeiscut.sag.content.equipment.handheldAirBlower;
 
 import com.simibubi.create.content.equipment.armor.BacktankUtil;
+import com.simibubi.create.foundation.item.CustomArmPoseItem;
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import io.github.dogeiscut.sag.registry.SagItems;
 import io.github.dogeiscut.sag.registry.SagSoundEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,17 +28,19 @@ import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.SimpleExplosionDamageCalculator;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class HandheldAirBlowerItem extends Item {
+public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
     private static final ExplosionDamageCalculator EXPLOSION_DAMAGE_CALCULATOR;
     public static final int MAX_DAMAGE = 350;
 
@@ -52,6 +57,26 @@ public class HandheldAirBlowerItem extends Item {
     // - Air explosion self damage
     // - Fix missing subtitle translations
     // - might need to store actual data on the item for some of this
+    // - raycast wind charge angle and fire it from the side of the screen instead of the center.
+
+    @Override
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+        return true;
+    }
+
+    @Override
+    public boolean canAttackBlock(BlockState state, Level worldIn, BlockPos pos, Player player) {
+        return false;
+    }
+
+    @Override
+    @Nullable
+    public HumanoidModel.ArmPose getArmPose(ItemStack stack, AbstractClientPlayer player, InteractionHand hand) {
+        if (!player.swinging) {
+            return HumanoidModel.ArmPose.CROSSBOW_HOLD;
+        }
+        return null;
+    }
 
     @Override
     @OnlyIn(Dist.CLIENT)
@@ -156,7 +181,7 @@ public class HandheldAirBlowerItem extends Item {
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.BOW;
+        return UseAnim.NONE;
     }
 
     @Override

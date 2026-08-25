@@ -1,5 +1,6 @@
 package io.github.dogeiscut.sag;
 
+import io.github.dogeiscut.sag.content.equipment.handheldAirBlower.HandheldAirBlowerRenderHandler;
 import io.github.dogeiscut.sag.registry.SagPartialModels;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -13,8 +14,11 @@ public class SagClient {
         onCtorClient(modEventBus);
     }
 
+    public static final HandheldAirBlowerRenderHandler BLOWER_RENDER_HANDLER = new HandheldAirBlowerRenderHandler();
     public static void onCtorClient(IEventBus modEventBus) {
         IEventBus neoEventBus = NeoForge.EVENT_BUS;
+
+        BLOWER_RENDER_HANDLER.registerListeners(neoEventBus);
 
         modEventBus.addListener(SagClient::clientInit);
     }
