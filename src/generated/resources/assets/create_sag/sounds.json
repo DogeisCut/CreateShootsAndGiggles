@@ -1,0 +1,71 @@
+{
+  "air_blower_blow": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.breeze.idle_ground"
+      }
+    ],
+    "subtitle": "create_sag.subtitle.air_blower_blow"
+  },
+  "air_blower_blow_compounded_1": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.breeze.idle_ground"
+      }
+    ]
+  },
+  "air_blower_charge_heavy": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.wind_charge.wind_burst"
+      }
+    ],
+    "subtitle": "create_sag.subtitle.air_blower_charge_heavy"
+  },
+  "air_blower_charge_light": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.breeze.wind_burst"
+      }
+    ],
+    "subtitle": "create_sag.subtitle.air_blower_charge_light"
+  },
+  "air_blower_explode": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.wind_charge.wind_burst"
+      }
+    ],
+    "subtitle": "create_sag.subtitle.air_blower_explode"
+  },
+  "air_blower_explode_compounded_1": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.generic.explode"
+      }
+    ]
+  },
+  "air_blower_shoot": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.wind_charge.wind_burst"
+      }
+    ],
+    "subtitle": "create_sag.subtitle.air_blower_shoot"
+  },
+  "air_blower_shoot_compounded_1": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.wind_charge.throw"
+      }
+    ]
+  }
+}

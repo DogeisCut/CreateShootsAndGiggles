@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-25T01:14:00.2506514	Registrate Provider for create_sag [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-08-25T03:11:40.6115402	Registrate Provider for create_sag [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 570e01fa097cf0d7ea9f5aec625a5f0343ffef59 assets/create_sag/blockstates/black_stained_blue_ice.json
 660a92cd91a4a16d7308873a93f89b0af48ef08f assets/create_sag/blockstates/black_stained_ice.json
 2418e40152d84c43b2fd9ead0da54e2928af35cb assets/create_sag/blockstates/black_stained_packed_ice.json
@@ -48,8 +48,8 @@ e0b4dcf2b47f9dadfc7b3c7629481066b39f477e assets/create_sag/blockstates/white_sta
 ad00d68d61689f22f1e6356b749d3b06a78cf5e9 assets/create_sag/blockstates/yellow_stained_blue_ice.json
 38a1fd572a48dae45303222c9fe0a0ffd973b6d2 assets/create_sag/blockstates/yellow_stained_ice.json
 e97c70350bb33597b4363ecad5b7eba3c2058f7d assets/create_sag/blockstates/yellow_stained_packed_ice.json
-29d1ed561f27a3f2c417c6ca4553a06cd29d6fb1 assets/create_sag/lang/en_ud.json
-6844608176b9c94c689de0b7f5212256345f7f8d assets/create_sag/lang/en_us.json
+740a274c8e090857ad8521b715cfe331886c5edd assets/create_sag/lang/en_ud.json
+b7b9d095840c3b47bb85e0e5cb823cd5d8fac719 assets/create_sag/lang/en_us.json
 a79cce52cf69355722b62cec22827511cee5dbfd assets/create_sag/models/block/black_stained_blue_ice.json
 faab78b9334c5f0bfd873f683a7e4e3c27176e5d assets/create_sag/models/block/black_stained_ice.json
 c87abe6fb15a943b442fb5632b093f600021d538 assets/create_sag/models/block/black_stained_packed_ice.json
@@ -202,5 +202,6 @@ f6f6bbfb16271d452d3c482aca036e9689d55eae data/minecraft/tags/block/ice.json
 2a0e1f936a2588ea47cf17eb55f22c2909650ec0 data/minecraft/tags/block/mineable/pickaxe.json
 f6f6bbfb16271d452d3c482aca036e9689d55eae data/minecraft/tags/block/polar_bears_spawnable_on_alternate.json
 f6f6bbfb16271d452d3c482aca036e9689d55eae data/minecraft/tags/block/snow_layer_cannot_survive_on.json
+e82e043481fe5638226850cfa1218e22fce000bc data/minecraft/tags/item/enchantable/durability.json
 ec4027c08228520e77bed3f91828b5e96a3e3001 data/sable/tags/block/fragile.json
 2a0e1f936a2588ea47cf17eb55f22c2909650ec0 data/sable/tags/block/slippery.json

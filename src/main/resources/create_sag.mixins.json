@@ -4,6 +4,7 @@
   "package": "io.github.dogeiscut.sag.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AllSoundEventsMixin"
   ],
   "client": [
   ],

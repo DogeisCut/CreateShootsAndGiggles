@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.IceBlock;
 public class SagBlocks {
     private static final CreateRegistrate REGISTRATE = Sag.registrate();
 
+    // accidentally made these all lowercase... I'll fix it later...
     public static final BlockEntry<IceBlock> white_stained_ice = iceBlock("white_stained_ice", "White Stained Ice");
     public static final BlockEntry<IceBlock> light_gray_stained_ice = iceBlock("light_gray_stained_ice", "Light Gray Stained Ice");
     public static final BlockEntry<IceBlock> gray_stained_ice = iceBlock("gray_stained_ice", "Gray Stained Ice");

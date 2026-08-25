@@ -7,14 +7,25 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import io.github.dogeiscut.sag.registry.SagBlocks;
 import io.github.dogeiscut.sag.registry.SagItems;
+import io.github.dogeiscut.sag.registry.SagSoundEvents;
 import net.createmod.catnip.lang.FontHelper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
+
+import java.util.concurrent.CompletableFuture;
 
 @Mod(Sag.MODID)
 public class Sag {
@@ -41,14 +52,35 @@ public class Sag {
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
 
         REGISTRATE.registerEventListeners(modEventBus);
+        modEventBus.addListener(Sag::gatherData);
 
+        SagSoundEvents.prepare();
         SagItems.register();
         SagBlocks.register();
+
+        modEventBus.addListener(SagSoundEvents::register);
+    }
+
+    public static void gatherData(GatherDataEvent evt) {
+        if (!evt.getMods().contains(MODID))
+            return;
+
+        ExistingFileHelper helper = evt.getExistingFileHelper();
+
+        DataGenerator generator = evt.getGenerator();
+        PackOutput output = generator.getPackOutput();
+        CompletableFuture<HolderLookup.Provider> registries = evt.getLookupProvider();
+
+        generator.addProvider(evt.includeClient(), SagSoundEvents.provider(output));
     }
 
     public static CreateRegistrate registrate() {
         if (!STACK_WALKER.getCallerClass().getPackageName().startsWith("io.github.dogeiscut"))
             throw new UnsupportedOperationException("Other mods are not permitted to use Create: Shoots and Giggles' registrate instance.");
         return REGISTRATE;
+    }
+
+    public static ResourceLocation asResource(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 }

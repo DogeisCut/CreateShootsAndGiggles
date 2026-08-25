@@ -47,5 +47,6 @@
   "block.create_sag.white_stained_packed_ice": "White Stained Packed Ice",
   "block.create_sag.yellow_stained_blue_ice": "Yellow Stained Blue Ice",
   "block.create_sag.yellow_stained_ice": "Yellow Stained Ice",
-  "block.create_sag.yellow_stained_packed_ice": "Yellow Stained Packed Ice"
+  "block.create_sag.yellow_stained_packed_ice": "Yellow Stained Packed Ice",
+  "item.create_sag.handheld_air_blower": "Handheld Air Blower"
 }
