@@ -109,6 +109,6 @@ public class SagSoundEvents {
             return DataProvider.saveStable(cache, json, path.resolve("sounds.json"));
         }
 
-        @Override public String getName() { return "Create Big Cannons custom sounds"; }
+        @Override public String getName() { return "Create: Shoots and Giggles custom sounds"; }
     }
 }

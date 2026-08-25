@@ -1,6 +1,7 @@
 package io.github.dogeiscut.sag.content.equipment.handheldAirBlower;
 
 import com.simibubi.create.content.equipment.armor.BacktankUtil;
+import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import io.github.dogeiscut.sag.registry.SagItems;
 import io.github.dogeiscut.sag.registry.SagSoundEvents;
 import net.minecraft.client.Minecraft;
@@ -26,14 +27,17 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.SimpleExplosionDamageCalculator;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class HandheldAirBlowerItem extends Item {
     private static final ExplosionDamageCalculator EXPLOSION_DAMAGE_CALCULATOR;
-    public static final int MAX_DAMAGE = 200;
+    public static final int MAX_DAMAGE = 350;
 
     // TODO:
     // - Fix bar flickering on charge
@@ -41,17 +45,19 @@ public class HandheldAirBlowerItem extends Item {
     // - Adjust charge sound events (custom sounds?)
     // - Increase wind charge speed for higher charge.
     // - Decide if this should be useable without a backtank
-    // - Balance and adjust default wind usage values.
     // - Blowing logic
     // - entity blowing interactions
     // - Sable sublevel interaction
     // - particles
-    // - model + renderer
-    // - Make shooting a wind charge cost air
-    // - Make overcharging a wind charge cost air
+    // - animations
     // - Air explosion self damage
     // - Fix missing subtitle translations
-    // - Make charging not cost air
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(SimpleCustomRenderer.create(this, new HandheldAirBlowerItemRenderer()));
+    }
 
     public HandheldAirBlowerItem(Properties properties) {
         super(properties.durability(MAX_DAMAGE));
@@ -71,7 +77,6 @@ public class HandheldAirBlowerItem extends Item {
                 int ticks = player.getTicksUsingItem();
                 int overfillTicks = getOverfillExplodeTicks();
 
-                // Smoothly fills up from 0 to 13 over the entire charge duration
                 float progress = (float) ticks / (float) overfillTicks;
                 return Math.round(13.0f * Mth.clamp(progress, 0.0f, 1.0f));
             }
@@ -90,13 +95,10 @@ public class HandheldAirBlowerItem extends Item {
                 int overfillTicks = getOverfillExplodeTicks();
 
                 if (ticks < minTicks) {
-                    // Cyan Blue during initial charge-up
                     return 0x00A8FF;
                 } else if (ticks <= maxTicks) {
-                    // Green Zone (Perfect Launch Window)
                     return 0x55FF55;
                 } else {
-                    // Fades smoothly from Green to Warning Red as it nears explosion
                     float factor = (float) (ticks - maxTicks) / (overfillTicks - maxTicks);
                     factor = Mth.clamp(factor, 0.0f, 1.0f);
 
@@ -161,16 +163,15 @@ public class HandheldAirBlowerItem extends Item {
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
         if (!(livingEntity instanceof Player player)) return;
 
-        if (remainingUseDuration % getDamageRate() == 0) {
-            findAndDamageHandheldAirBlower(player);
-        }
-
         int ticksUsed = livingEntity.getTicksUsingItem();
 
         if (player.isCrouching()) {
             handleCharging(level, player, ticksUsed);
         } else {
             // TODO: Blowing logic...
+            if (remainingUseDuration % getDamageRate() == 0) {
+                findAndDamageHandheldAirBlower(player);
+            }
             if (ticksUsed % 6 == 0) {
                 SagSoundEvents.AIR_BLOWER_BLOW.playFrom(player, 0.6f, 1.0f);
             }
@@ -207,6 +208,7 @@ public class HandheldAirBlowerItem extends Item {
                 );
             }
             SagSoundEvents.AIR_BLOWER_EXPLODE.playFrom(player, 1.0f, 1.0f);
+            findAndDamageHandheldAirBlower(player, getOverfillItemDamage());
             player.stopUsingItem();
         }
     }
@@ -233,6 +235,7 @@ public class HandheldAirBlowerItem extends Item {
                 windCharge.shoot(look.x, look.y, look.z, 1.5f, 1.0f);
                 level.addFreshEntity(windCharge);
             }
+            findAndDamageHandheldAirBlower(player, getWindChargeItemDamage());
             SagSoundEvents.AIR_BLOWER_SHOOT.playFrom(player, 1.0f, 1.0f);
             player.getCooldowns().addCooldown(this, getWindChargeCooldownTicks());
         }
@@ -242,10 +245,16 @@ public class HandheldAirBlowerItem extends Item {
     public static int getMaxChargeTicks() { return 40; }
     public static int getOverfillExplodeTicks() { return 60; }
     public static int getWindChargeCooldownTicks() { return 15; }
-    public static int getDamageRate() { return 5; }
+    public static int getDamageRate() { return 10; }
+    public static int getOverfillItemDamage() { return 10; }
+    public static int getWindChargeItemDamage() { return 5; }
     public static int maxUses() { return MAX_DAMAGE; }
 
     private static void findAndDamageHandheldAirBlower(Player player) {
+        findAndDamageHandheldAirBlower(player, 1);
+    }
+
+    private static void findAndDamageHandheldAirBlower(Player player, int by) {
         if (player == null || player.level().isClientSide) return;
 
         EquipmentSlot equipmentSlot = EquipmentSlot.MAINHAND;
@@ -258,7 +267,7 @@ public class HandheldAirBlowerItem extends Item {
         if (!SagItems.HANDHELD_AIR_BLOWER.isIn(blower)) return;
 
         if (!BacktankUtil.canAbsorbDamage(player, maxUses())) {
-            blower.hurtAndBreak(1, player, equipmentSlot);
+            blower.hurtAndBreak(by, player, equipmentSlot);
         }
     }
 }

@@ -99,7 +99,7 @@ public class SagBlocks {
                 .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "slippery")))
                 .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "fragile")))
                 .tag()
-                .blockstate(simpleCubeAll(id))
+                .blockstate(simpleCubeAll("stained_ice/" + id))
                 .simpleItem()
                 .lang(name)
                 .register();
@@ -116,7 +116,7 @@ public class SagBlocks {
                 .tag(BlockTags.ICE)
                 .tag(BlockTags.POLAR_BEARS_SPAWNABLE_ON_ALTERNATE)
                 .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "slippery")))
-                .blockstate(simpleCubeAll(id))
+                .blockstate(simpleCubeAll("stained_packed_ice/" + id))
                 .simpleItem()
                 .lang(name)
                 .register();
@@ -133,7 +133,7 @@ public class SagBlocks {
                 .tag(BlockTags.ICE)
                 .tag(BlockTags.POLAR_BEARS_SPAWNABLE_ON_ALTERNATE)
                 .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("sable", "slippery")))
-                .blockstate(simpleCubeAll(id))
+                .blockstate(simpleCubeAll("stained_blue_ice/" + id))
                 .simpleItem()
                 .lang(name)
                 .register();

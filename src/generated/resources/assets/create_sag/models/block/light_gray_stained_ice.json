@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "create_sag:block/light_gray_stained_ice"
+    "all": "create_sag:block/stained_ice/light_gray_stained_ice"
   }
 }

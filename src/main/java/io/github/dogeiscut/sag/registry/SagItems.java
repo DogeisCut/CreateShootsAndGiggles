@@ -14,8 +14,8 @@ public class SagItems {
     public static final ItemEntry<HandheldAirBlowerItem> HANDHELD_AIR_BLOWER = REGISTRATE.item("handheld_air_blower", HandheldAirBlowerItem::new)
             .properties(p -> p.rarity(Rarity.UNCOMMON))
             .tag(ItemTags.DURABILITY_ENCHANTABLE)
-            //.model(AssetLookup.itemModelWithPartials())
-            .model((ctx, prov) -> {})
+            .model(AssetLookup.itemModelWithPartials())
+            //.model((ctx, prov) -> {})
             .register();
 
     public static void register() {

@@ -1,0 +1,157 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"handle": "block/smooth_stone_slab_side",
+		"trigger": "block/andesite",
+		"body": "block/copper_block",
+		"particle": "create:block/net"
+	},
+	"elements": [
+		{
+			"name": "Rod Back Cap",
+			"from": [6.5, 4, 14],
+			"to": [9.5, 7, 15],
+			"rotation": {"angle": -45, "axis": "z", "origin": [8, 5.5, 8]},
+			"faces": {
+				"north": {"uv": [5, 12, 2, 15], "texture": "#body"},
+				"east": {"uv": [6, 12, 5, 15], "texture": "#body"},
+				"south": {"uv": [9, 12, 6, 15], "texture": "#body"},
+				"west": {"uv": [2, 12, 1, 15], "texture": "#body"},
+				"up": {"uv": [2, 12, 5, 11], "texture": "#body"},
+				"down": {"uv": [5, 11, 8, 12], "texture": "#body"}
+			}
+		},
+		{
+			"name": "Rod Back Cap",
+			"from": [7, 4.5, 15],
+			"to": [9, 6.5, 17],
+			"rotation": {"angle": -45, "axis": "z", "origin": [8, 5.5, 8]},
+			"faces": {
+				"north": {"uv": [3, 13, 5, 15], "texture": "#body"},
+				"east": {"uv": [1, 13, 3, 15], "texture": "#body"},
+				"south": {"uv": [7, 13, 9, 15], "texture": "#body"},
+				"west": {"uv": [5, 13, 7, 15], "texture": "#body"},
+				"up": {"uv": [5, 13, 3, 11], "texture": "#body"},
+				"down": {"uv": [7, 11, 5, 13], "texture": "#body"}
+			}
+		},
+		{
+			"name": "Connector",
+			"from": [5.75, 4, 6],
+			"to": [10.25, 8, 8],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 4, 8]},
+			"faces": {
+				"north": {"uv": [5, 1, 1, 5], "texture": "#body"},
+				"east": {"uv": [9, 11, 7, 15], "texture": "#body"},
+				"south": {"uv": [13, 11, 9, 15], "texture": "#body"},
+				"west": {"uv": [5, 11, 3, 15], "texture": "#body"},
+				"up": {"uv": [3, 11, 7, 9], "texture": "#body"},
+				"down": {"uv": [11, 13, 15, 15], "texture": "#body"}
+			}
+		},
+		{
+			"name": "Connector",
+			"from": [5.75, 4, 8],
+			"to": [10.25, 6, 10],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 4, 8]},
+			"faces": {
+				"north": {"uv": [7, 13, 3, 15], "texture": "#body"},
+				"east": {"uv": [9, 13, 7, 15], "texture": "#body"},
+				"south": {"uv": [13, 13, 9, 15], "texture": "#body"},
+				"west": {"uv": [3, 13, 1, 15], "texture": "#body"},
+				"up": {"uv": [3, 13, 7, 11], "texture": "#body"},
+				"down": {"uv": [4, 4, 8, 6], "texture": "#body"}
+			}
+		},
+		{
+			"name": "Rod Back Cap",
+			"from": [6, 4.5, 9],
+			"to": [10, 6.5, 11],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 5.5, 8]},
+			"faces": {
+				"north": {"uv": [3, 13, 7, 15], "texture": "#body"},
+				"east": {"uv": [1, 13, 3, 15], "texture": "#body"},
+				"south": {"uv": [9, 13, 13, 15], "texture": "#body"},
+				"west": {"uv": [7, 13, 9, 15], "texture": "#body"},
+				"up": {"uv": [7, 13, 3, 11], "texture": "#body"},
+				"down": {"uv": [11, 11, 7, 13], "texture": "#body"}
+			}
+		},
+		{
+			"name": "Grip",
+			"from": [7.1, 1, 12],
+			"to": [8.9, 5, 15],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 2, 14]},
+			"faces": {
+				"north": {"uv": [5, 7, 6.8, 11], "texture": "#handle"},
+				"east": {"uv": [13, 7, 16, 11], "texture": "#handle"},
+				"south": {"uv": [7, 7, 8.8, 11], "texture": "#handle"},
+				"west": {"uv": [16, 7, 13, 11], "texture": "#handle"},
+				"up": {"uv": [5, 2, 6.8, 5], "texture": "#handle"},
+				"down": {"uv": [7, 11, 8.8, 14], "texture": "#handle"}
+			}
+		},
+		{
+			"name": "Trigger",
+			"from": [7.4, 3, 11],
+			"to": [8.6, 6, 13],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 2, 14]},
+			"faces": {
+				"north": {"uv": [8, 9, 9, 12], "texture": "#trigger"},
+				"east": {"uv": [6, 9, 8, 12], "texture": "#trigger"},
+				"south": {"uv": [7, 9, 8, 12], "texture": "#trigger"},
+				"west": {"uv": [7, 9, 9, 12], "texture": "#trigger"},
+				"up": {"uv": [6, 6, 7, 8], "texture": "#trigger"},
+				"down": {"uv": [6, 6, 7, 8], "texture": "#trigger"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [1, 0, 0],
+			"translation": [0, 4, -2.5],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [1, 0, 0],
+			"translation": [0, 4, -2.5],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"firstperson_righthand": {
+			"rotation": [10, 0, 10],
+			"translation": [1, 4, 1]
+		},
+		"firstperson_lefthand": {
+			"rotation": [10, 0, 10],
+			"translation": [1, 4, 1]
+		},
+		"ground": {
+			"rotation": [0, 0, 90],
+			"translation": [-2.25, -1, -0.75],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"gui": {
+			"rotation": [30, 45, 0],
+			"translation": [-0.5, 3.5, 0]
+		},
+		"fixed": {
+			"rotation": [0, 90, 0],
+			"translation": [-1.25, 4.25, -1]
+		}
+	},
+	"groups": [
+		0,
+		1,
+		2,
+		3,
+		4,
+		{
+			"name": "placement_handgun",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [5, 6]
+		}
+	]
+}
