@@ -35,6 +35,22 @@ public class HandheldAirBlowerItem extends Item {
     private static final ExplosionDamageCalculator EXPLOSION_DAMAGE_CALCULATOR;
     public static final int MAX_DAMAGE = 200;
 
+    // TODO:
+    // - Fix bar flickering on charge
+    // - Fix being able to store charge state by uncrouching while holding right click. (force unuse on uncrouch?)
+    // - Adjust charge sound events (custom sounds?)
+    // - Increase wind charge speed for higher charge.
+    // - Decide if this should be useable without a backtank
+    // - Balance and adjust default wind usage values.
+    // - Blowing logic
+    // - entity blowing interactions
+    // - Sable sublevel interaction
+    // - particles
+    // - model + renderer
+    // - Make shooting a wind charge cost air
+    // - Make overcharging a wind charge cost air
+    // - Air explosion self damage
+
     public HandheldAirBlowerItem(Properties properties) {
         super(properties.durability(MAX_DAMAGE));
     }
