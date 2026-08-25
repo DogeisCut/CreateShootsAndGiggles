@@ -50,6 +50,8 @@ public class HandheldAirBlowerItem extends Item {
     // - Make shooting a wind charge cost air
     // - Make overcharging a wind charge cost air
     // - Air explosion self damage
+    // - Fix missing subtitle translations
+    // - Make charging not cost air
 
     public HandheldAirBlowerItem(Properties properties) {
         super(properties.durability(MAX_DAMAGE));
