@@ -120,9 +120,9 @@
 		},
 		{
 			"name": "Grip",
-			"from": [7.1, 1, 1],
-			"to": [8.9, 5, 3],
-			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 2, 2]},
+			"from": [7.1, 1, -1],
+			"to": [8.9, 5, 1],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 2, 0]},
 			"faces": {
 				"north": {"uv": [5, 7, 5.9, 9], "texture": "#handle"},
 				"east": {"uv": [13, 7, 14, 9], "texture": "#handle"},

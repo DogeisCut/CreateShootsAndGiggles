@@ -57,6 +57,7 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
     // - Fix missing subtitle translations
     // - fix animations being shared between all item instances
     // - shake animation as it overcharges
+    // - item SHIFT summary
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
