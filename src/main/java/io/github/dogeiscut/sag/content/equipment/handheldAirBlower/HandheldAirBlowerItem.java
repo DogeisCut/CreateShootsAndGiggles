@@ -3,6 +3,7 @@ package io.github.dogeiscut.sag.content.equipment.handheldAirBlower;
 import com.simibubi.create.content.equipment.armor.BacktankUtil;
 import com.simibubi.create.foundation.item.CustomArmPoseItem;
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
+import io.github.dogeiscut.sag.SagClient;
 import io.github.dogeiscut.sag.registry.SagItems;
 import io.github.dogeiscut.sag.registry.SagSoundEvents;
 import net.minecraft.client.Minecraft;
@@ -45,19 +46,17 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
     public static final int MAX_DAMAGE = 350;
 
     // TODO:
-    // - Fix bar flickering on charge
-    // - Fix being able to store charge state by uncrouching while holding right click. (force unuse on uncrouch?)
+    // - Fix bar flickering on charge sometimes
+    // - Fix being able to store charge state by uncrouching while holding right click. (force unuse on uncrouch and crouch?)
     // - Increase wind charge speed for higher charge.
     // - Decide if this should be useable without a backtank (im going with no but i havent changed the code yet...)
     // - Blowing logic
     // - entity blowing interactions
     // - Sable sublevel interaction
     // - particles
-    // - animations
-    // - Air explosion self damage
     // - Fix missing subtitle translations
-    // - might need to store actual data on the item for some of this
-    // - raycast wind charge angle and fire it from the side of the screen instead of the center.
+    // - fix animations being shared between all item instances
+    // - shake animation as it overcharges
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
@@ -158,8 +157,11 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        if (slotChanged) return true;
-        return !ItemStack.isSameItem(oldStack, newStack);
+        if (slotChanged || oldStack.getItem() != newStack.getItem()) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -218,9 +220,9 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
         }
 
         if (chargeTicks > overfillTicks) {
+            DamageSource damageSource = level.damageSources().explosion(player, player);
             if (!level.isClientSide) {
                 Vec3 eyePos = player.getEyePosition();
-                DamageSource damageSource = level.damageSources().explosion(player, player);
 
                 level.explode(
                         player,
@@ -238,6 +240,8 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
             SagSoundEvents.AIR_BLOWER_EXPLODE.playFrom(player, 1.0f, 1.0f);
             findAndDamageHandheldAirBlower(player, getOverfillItemDamage());
             player.stopUsingItem();
+            player.getCooldowns().addCooldown(this, getOverchargeCooldownTicks());
+            player.hurt(damageSource, getOverchargeSelfDamage());
         }
     }
 
@@ -254,7 +258,7 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) return;
 
-        int chargeTicks = entity.getTicksUsingItem();
+        int chargeTicks = this.getUseDuration(stack, entity) - timeLeft;
 
         if (player.isCrouching() && chargeTicks >= getMinChargeTicks()) {
             if (!level.isClientSide) {
@@ -262,7 +266,11 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
                 WindCharge windCharge = new WindCharge(player, level, player.getX(), player.getEyeY() - 0.1, player.getZ());
                 windCharge.shoot(look.x, look.y, look.z, 1.5f, 1.0f);
                 level.addFreshEntity(windCharge);
+            } else {
+                InteractionHand hand = player.getMainHandItem() == stack ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+                SagClient.BLOWER_RENDER_HANDLER.shoot(hand, player.position());
             }
+
             findAndDamageHandheldAirBlower(player, getWindChargeItemDamage());
             SagSoundEvents.AIR_BLOWER_SHOOT.playFrom(player, 1.0f, 1.0f);
             player.getCooldowns().addCooldown(this, getWindChargeCooldownTicks());
@@ -273,9 +281,11 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
     public static int getMaxChargeTicks() { return 40; }
     public static int getOverfillExplodeTicks() { return 60; }
     public static int getWindChargeCooldownTicks() { return 15; }
+    public static int getOverchargeCooldownTicks() { return 60; }
     public static int getDamageRate() { return 10; }
     public static int getOverfillItemDamage() { return 10; }
     public static int getWindChargeItemDamage() { return 5; }
+    public static float getOverchargeSelfDamage() { return 7.0f; }
     public static int maxUses() { return MAX_DAMAGE; }
 
     private static void findAndDamageHandheldAirBlower(Player player) {

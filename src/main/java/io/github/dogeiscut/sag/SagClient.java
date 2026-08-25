@@ -20,6 +20,8 @@ public class SagClient {
 
         BLOWER_RENDER_HANDLER.registerListeners(neoEventBus);
 
+        neoEventBus.register(BLOWER_RENDER_HANDLER);
+
         modEventBus.addListener(SagClient::clientInit);
     }
 
