@@ -1,6 +1,6 @@
 package io.github.dogeiscut.sag.registry;
 
-public class ModBlocks {
+public class SagBlocks {
     public static void register() {
     }
 }
