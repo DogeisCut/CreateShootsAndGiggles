@@ -52,7 +52,7 @@ Ideally these would have their own creative inventory tab as to not mess up the 
 
 ## Bomb
 
-Throws out as an entity like how packages do it. Looks like a cartoon bomb and explodes after a bit.
+Throws out as an entity like how packages do it. Looks like a cartoon bomb and explodes after a bit. The power increases the more bombs are thrown out in a single stack.
 
 ## Steering Wheel
 
