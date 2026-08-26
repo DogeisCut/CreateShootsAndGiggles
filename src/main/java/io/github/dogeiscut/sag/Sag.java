@@ -18,6 +18,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
 
@@ -61,17 +62,27 @@ public class Sag {
         modEventBus.addListener(SagSoundEvents::register);
     }
 
-    public static void gatherData(GatherDataEvent evt) {
-        if (!evt.getMods().contains(ID))
+    public static void gatherData(GatherDataEvent event) {
+        if (!event.getMods().contains(ID))
             return;
 
-        ExistingFileHelper helper = evt.getExistingFileHelper();
+        ExistingFileHelper helper = event.getExistingFileHelper();
 
-        DataGenerator generator = evt.getGenerator();
+        DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> registries = evt.getLookupProvider();
+        CompletableFuture<HolderLookup.Provider> registries = event.getLookupProvider();
 
-        generator.addProvider(evt.includeClient(), SagSoundEvents.provider(output));
+        generator.addProvider(event.includeClient(), SagSoundEvents.provider(output));
+        generator.addProvider(event.includeClient(), new LanguageProvider(output, Sag.ID, "en_us") {
+            @Override
+            protected void addTranslations() {
+                //SagSoundEvents.provideLang(this::add);
+
+                add("item.create_sag.handheld_air_blower.tooltip.summary", "...");
+                add("item.create_sag.handheld_air_blower.tooltip.condition1", "R-Click");
+                add("item.create_sag.handheld_air_blower.tooltip.behaviour1", "...");
+            }
+        });
     }
 
     public static CreateRegistrate registrate() {

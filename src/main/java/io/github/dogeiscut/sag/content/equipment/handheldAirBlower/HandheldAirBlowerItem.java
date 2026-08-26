@@ -56,7 +56,6 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
     // - Sable sublevel interaction
     // - particles
     // - Fix missing subtitle translations
-    // - shake animation as it overcharges
     // - "Hold [Shift] for Summary"
     // - Custom overcharging death message
     // - make charge bar not shared between item instances (backtank bar is fine, it's just like that)
@@ -157,9 +156,9 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
 
     private boolean isChargingClient(ItemStack stack) {
         Player player = getClientPlayer();
-        return player != null && player.isUsingItem()
-                && SagItems.HANDHELD_AIR_BLOWER.isIn(player.getUseItem())
-                && player.isCrouching();
+        if (player == null || !player.isUsingItem() || !player.isCrouching()) return false;
+        ItemStack used = player.getUseItem();
+        return SagItems.HANDHELD_AIR_BLOWER.isIn(used) && ItemStack.matches(stack, used);
     }
 
     private Player getClientPlayer() {

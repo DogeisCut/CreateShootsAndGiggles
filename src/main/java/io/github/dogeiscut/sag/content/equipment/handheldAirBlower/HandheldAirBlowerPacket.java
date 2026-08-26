@@ -40,24 +40,16 @@ public class HandheldAirBlowerPacket extends ShootGadgetPacket {
 
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
+    @Override @OnlyIn(Dist.CLIENT)
     public void handle(LocalPlayer player) {
-        Entity renderViewEntity = Minecraft.getInstance()
-                .getCameraEntity();
-        if (renderViewEntity == null)
-            return;
-        if (renderViewEntity.position()
-                .distanceTo(location) > 100)
-            return;
+        Entity renderViewEntity = Minecraft.getInstance().getCameraEntity();
+        if (renderViewEntity == null || renderViewEntity.position().distanceTo(location) > 100) return;
 
-        ShootableGadgetRenderHandler handler = getHandler();
-        handleAdditional();
-        if (blow) {
-            SagClient.HANDHELD_AIR_BLOWER_RENDER_HANDLER.blow(hand, location);
-        } else {
-            SagClient.HANDHELD_AIR_BLOWER_RENDER_HANDLER.shoot(hand, location);
+        if (self) {
+            if (blow) SagClient.HANDHELD_AIR_BLOWER_RENDER_HANDLER.blow(hand, location);
+            else SagClient.HANDHELD_AIR_BLOWER_RENDER_HANDLER.shoot(hand, location);
         }
+        // bystanders: nothing to do: playSound for this is currently a no-op anyway, and they don't need the recoil kick
     }
 
     @Override @OnlyIn(Dist.CLIENT)
