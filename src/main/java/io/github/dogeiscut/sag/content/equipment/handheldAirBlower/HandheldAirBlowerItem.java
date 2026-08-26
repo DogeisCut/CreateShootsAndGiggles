@@ -157,9 +157,10 @@ public class HandheldAirBlowerItem extends Item implements CustomArmPoseItem {
 
     private boolean isChargingClient(ItemStack stack) {
         Player player = getClientPlayer();
-        return player != null && player.isUsingItem()
-                && SagItems.HANDHELD_AIR_BLOWER.isIn(player.getUseItem())
-                && player.isCrouching();
+        if (player != null && player.isUsingItem() && player.getUseItem() == stack) {
+            return player.isCrouching();
+        }
+        return false;
     }
 
     private Player getClientPlayer() {
