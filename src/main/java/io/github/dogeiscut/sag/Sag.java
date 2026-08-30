@@ -60,10 +60,10 @@ public class Sag {
         SagDataComponents.register(modEventBus);
 
         SagSoundEvents.prepare();
+        SagBlockEntityTypes.register();
         SagItems.register();
         SagBlocks.register();
         SagPackets.register();
-        SagBlockEntityTypes.register();
 
         modEventBus.addListener(SagSoundEvents::register);
     }

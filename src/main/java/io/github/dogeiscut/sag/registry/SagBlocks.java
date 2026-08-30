@@ -95,11 +95,12 @@ public class SagBlocks {
             .register();
 
 
-    public static final BlockEntry<BedrockBusterBlock> BEDROCK_BUSTER = REGISTRATE
-            .block("bedrock_buster", BedrockBusterBlock::new)
+    public static final BlockEntry<BedrockBusterBlock> BEDROCK_BUSTER = REGISTRATE.block("bedrock_buster", BedrockBusterBlock::new)
             .initialProperties(SharedProperties::stone)
             .addLayer(() -> RenderType::translucent)
-            .properties(p -> p.mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLACK).strength(50f, 1200f))
+            .properties(p -> p.noOcclusion()
+                    .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLACK)
+                    .strength(50f, 1200f))
             .transform(pickaxeOnly())
             .blockstate(directionalBlockProvider(true))
             .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 16.0))

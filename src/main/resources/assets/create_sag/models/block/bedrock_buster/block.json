@@ -11,11 +11,11 @@
 			"to": [16, 16, 16],
 			"rotation": {"angle": 0, "axis": "x", "origin": [8, 14, 8]},
 			"faces": {
-				"north": {"uv": [10, 8, 8, 0], "rotation": 270, "texture": "#mesh"},
-				"east": {"uv": [8, 0, 10, 8], "rotation": 270, "texture": "#mesh"},
-				"south": {"uv": [8, 0, 10, 8], "rotation": 90, "texture": "#mesh"},
-				"west": {"uv": [8, 0, 10, 8], "rotation": 90, "texture": "#mesh"},
-				"up": {"uv": [0, 0, 8, 8], "rotation": 180, "texture": "#mesh"},
+				"north": {"uv": [10, 8, 8, 0], "rotation": 270, "texture": "#mesh", "cullface": "north"},
+				"east": {"uv": [8, 0, 10, 8], "rotation": 270, "texture": "#mesh", "cullface": "east"},
+				"south": {"uv": [8, 0, 10, 8], "rotation": 90, "texture": "#mesh", "cullface": "south"},
+				"west": {"uv": [8, 0, 10, 8], "rotation": 90, "texture": "#mesh", "cullface": "west"},
+				"up": {"uv": [0, 0, 8, 8], "rotation": 180, "texture": "#mesh", "cullface": "up"},
 				"down": {"uv": [0, 0, 8, 8], "texture": "#mesh"}
 			}
 		},
@@ -24,18 +24,29 @@
 			"to": [16, 4, 16],
 			"rotation": {"angle": 0, "axis": "x", "origin": [8, 2, 8]},
 			"faces": {
-				"north": {"uv": [10, 8, 8, 0], "rotation": 270, "texture": "#mesh"},
-				"east": {"uv": [8, 0, 10, 8], "rotation": 270, "texture": "#mesh"},
-				"south": {"uv": [8, 0, 10, 8], "rotation": 90, "texture": "#mesh"},
-				"west": {"uv": [8, 0, 10, 8], "rotation": 90, "texture": "#mesh"},
+				"north": {"uv": [10, 8, 8, 0], "rotation": 270, "texture": "#mesh", "cullface": "north"},
+				"east": {"uv": [8, 0, 10, 8], "rotation": 270, "texture": "#mesh", "cullface": "east"},
+				"south": {"uv": [8, 0, 10, 8], "rotation": 90, "texture": "#mesh", "cullface": "south"},
+				"west": {"uv": [8, 0, 10, 8], "rotation": 90, "texture": "#mesh", "cullface": "west"},
 				"up": {"uv": [0, 0, 8, 8], "rotation": 180, "texture": "#mesh"},
-				"down": {"uv": [0, 0, 8, 8], "texture": "#mesh"}
+				"down": {"uv": [0, 0, 8, 8], "texture": "#mesh", "cullface": "down"}
 			}
 		},
 		{
 			"from": [0, 4, 0],
 			"to": [16, 12, 16],
 			"rotation": {"angle": 0, "axis": "x", "origin": [8, 6, 8]},
+			"faces": {
+				"north": {"uv": [4, 16, 0, 8], "rotation": 270, "texture": "#mesh", "cullface": "north"},
+				"east": {"uv": [0, 8, 4, 16], "rotation": 270, "texture": "#mesh", "cullface": "east"},
+				"south": {"uv": [0, 8, 4, 16], "rotation": 90, "texture": "#mesh", "cullface": "south"},
+				"west": {"uv": [0, 8, 4, 16], "rotation": 90, "texture": "#mesh", "cullface": "west"}
+			}
+		},
+		{
+			"from": [15.95, 4, 0.05],
+			"to": [0.05, 12, 15.95],
+			"rotation": {"angle": 0, "axis": "x", "origin": [24, 6, 8]},
 			"faces": {
 				"north": {"uv": [4, 16, 0, 8], "rotation": 270, "texture": "#mesh"},
 				"east": {"uv": [0, 8, 4, 16], "rotation": 270, "texture": "#mesh"},
