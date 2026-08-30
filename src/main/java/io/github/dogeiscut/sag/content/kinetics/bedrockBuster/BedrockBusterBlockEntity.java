@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -69,8 +70,7 @@ public class BedrockBusterBlockEntity extends KineticBlockEntity {
 
             BlockState stateToBreak = level.getBlockState(targetPos);
 
-            level.playSound(null, targetPos, stateToBreak.getSoundType()
-                    .getHitSound(), SoundSource.BLOCKS, .8f, ((float) charge / CHARGE_REQUIRED) + 0.5f);
+            level.playSound(null, targetPos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, .8f, ((float) charge / CHARGE_REQUIRED) + 0.5f);
 
             level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, targetPos, Block.getId(stateToBreak));
 
