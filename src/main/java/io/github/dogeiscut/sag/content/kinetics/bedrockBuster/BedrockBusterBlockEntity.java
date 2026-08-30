@@ -22,13 +22,13 @@ public class BedrockBusterBlockEntity extends KineticBlockEntity {
 
     private int charge = 0;
     private final int breakerId = -BlockBreakingKineticBlockEntity.NEXT_BREAKER_ID.incrementAndGet();
+
     LerpedFloat visualSpeed = LerpedFloat.linear();
     float angle;
 
     public BedrockBusterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
-
 
     private BlockPos getTargetPos() {
         return getBlockPos().relative(getBlockState().getValue(BedrockBusterBlock.FACING));
@@ -44,35 +44,31 @@ public class BedrockBusterBlockEntity extends KineticBlockEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level == null || level.isClientSide)
-            return;
+        if (level.isClientSide) {
+            float targetSpeed = getSpeed();
+            visualSpeed.updateChaseTarget(targetSpeed);
+            visualSpeed.tickChaser();
+            angle += visualSpeed.getValue() * 3 / 10f;
+            angle %= 360;
+        } else {
+            BlockPos targetPos = getTargetPos();
+            BlockState target = level.getBlockState(targetPos);
+            boolean chargingProperly = isSpeedRequirementFulfilled() && target.is(Blocks.BEDROCK);
 
-        BlockPos targetPos = getTargetPos();
-        BlockState target = level.getBlockState(targetPos);
-        boolean chargingProperly = isSpeedRequirementFulfilled() && target.is(Blocks.BEDROCK);
-
-        if (!chargingProperly) {
-            if (charge != 0) {
-                charge = 0;
-                level.destroyBlockProgress(breakerId, targetPos, -1);
+            if (!chargingProperly) {
+                if (charge != 0) {
+                    charge = 0;
+                    level.destroyBlockProgress(breakerId, targetPos, -1);
+                }
+                return;
             }
-            return;
+
+            charge++;
+            level.destroyBlockProgress(breakerId, targetPos, Mth.clamp(charge * 10 / CHARGE_REQUIRED, 0, 9));
+
+            if (charge >= CHARGE_REQUIRED)
+                detonate(targetPos);
         }
-
-        charge++;
-        level.destroyBlockProgress(breakerId, targetPos, Mth.clamp(charge * 10 / CHARGE_REQUIRED, 0, 9));
-
-        if (charge >= CHARGE_REQUIRED)
-            detonate(targetPos);
-
-        if (!level.isClientSide)
-            return;
-
-        float targetSpeed = getSpeed();
-        visualSpeed.updateChaseTarget(targetSpeed);
-        visualSpeed.tickChaser();
-        angle += visualSpeed.getValue() * 3 / 100f;
-        angle %= 360;
     }
 
     private void detonate(BlockPos targetPos) {

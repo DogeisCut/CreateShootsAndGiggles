@@ -25,42 +25,36 @@ public class BedrockBusterRenderer extends KineticBlockEntityRenderer<BedrockBus
     }
 
     @Override
-    protected SuperByteBuffer getRotatedModel(BedrockBusterBlockEntity be, BlockState state) {
-        return CachedBuffers.partialFacing(SagPartialModels.BEDROCK_BUSTER_COG, state);
-    }
-
-    @Override
     protected void renderSafe(BedrockBusterBlockEntity be, float partialTicks, PoseStack ms,
                               MultiBufferSource buffer, int light, int overlay) {
         if (VisualizationManager.supportsVisualization(be.getLevel())) return;
-
-        BlockState state = be.getBlockState();
-        Direction.Axis axis = ((IRotate) state.getBlock()).getRotationAxis(state);
-        VertexConsumer vb = buffer.getBuffer(getRenderType(be, state));
-
-        float mainAngle = KineticBlockEntityRenderer.getAngleForBe(be, be.getBlockPos(), axis)
-                * 180f / (float) Math.PI;
-
-        for (int i = 0; i < 4; i++) {
-            float armOffset = i * 90f;
-
-            SuperByteBuffer claw = CachedBuffers.partialFacing(SagPartialModels.BEDROCK_BUSTER_CLAW, state);
-            claw.light(light)
-                    .center()
-                    .rotate((float) Math.toRadians(armOffset + mainAngle), Direction.get(Direction.AxisDirection.POSITIVE, axis))
-                    .uncenter();
-            claw.renderInto(ms, vb);
-
-            float wheelSpin = mainAngle * CRUSHING_WHEEL_SPIN_MULTIPLIER;
-            SuperByteBuffer wheel = CachedBuffers.partialFacing(AllPartialModels.CRUSHING_WHEEL, state);
-            wheel.light(light)
-                    .center()
-                    .rotate((float) Math.toRadians(armOffset + mainAngle), Direction.get(Direction.AxisDirection.POSITIVE, axis))
-                    .translate(CLAW_RADIUS, 0, 0)
-                    .rotate((float) Math.toRadians(wheelSpin), Direction.get(Direction.AxisDirection.POSITIVE, perpendicularAxis(axis)))
-                    .uncenter();
-            wheel.renderInto(ms, vb);
-        }
+//        BlockState state = be.getBlockState();
+//        Direction.Axis axis = ((IRotate) state.getBlock()).getRotationAxis(state);
+//        VertexConsumer vb = buffer.getBuffer(getRenderType(be, state));
+//
+//        float speed = be.visualSpeed.getValue(partialTicks) * 3 / 10f;
+//        float angle = be.angle + speed * partialTicks;
+//
+//        for (int i = 0; i < 4; i++) {
+//            float armOffset = i * 90f;
+//
+//            SuperByteBuffer claw = CachedBuffers.partialFacing(SagPartialModels.BEDROCK_BUSTER_CLAW, state);
+//            claw.light(light)
+//                    .center()
+//                    .rotate((float) Math.toRadians(armOffset + angle), Direction.get(Direction.AxisDirection.POSITIVE, axis))
+//                    .uncenter();
+//            claw.renderInto(ms, vb);
+//
+//            float wheelSpin = mainAngle * CRUSHING_WHEEL_SPIN_MULTIPLIER;
+//            SuperByteBuffer wheel = CachedBuffers.partialFacing(AllPartialModels.CRUSHING_WHEEL, state);
+//            wheel.light(light)
+//                    .center()
+//                    .rotate((float) Math.toRadians(armOffset + mainAngle), Direction.get(Direction.AxisDirection.POSITIVE, axis))
+//                    .translate(CLAW_RADIUS, 0, 0)
+//                    .rotate((float) Math.toRadians(wheelSpin), Direction.get(Direction.AxisDirection.POSITIVE, perpendicularAxis(axis)))
+//                    .uncenter();
+//            wheel.renderInto(ms, vb);
+//        }
     }
 
     private static Direction.Axis perpendicularAxis(Direction.Axis axis) {
