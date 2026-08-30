@@ -8,9 +8,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -45,7 +48,7 @@ public class BedrockBusterBlockEntity extends KineticBlockEntity {
     public void tick() {
         super.tick();
         if (level.isClientSide) {
-            float targetSpeed = getSpeed();
+            float targetSpeed = isSpeedRequirementFulfilled() ? getSpeed() : 0.0f;
             visualSpeed.updateChaseTarget(targetSpeed);
             visualSpeed.tickChaser();
             angle += visualSpeed.getValue() * 3 / 10f;
@@ -59,12 +62,21 @@ public class BedrockBusterBlockEntity extends KineticBlockEntity {
                 if (charge != 0) {
                     charge = 0;
                     level.destroyBlockProgress(breakerId, targetPos, -1);
+                    level.destroyBlockProgress(breakerId, worldPosition, -1);
                 }
                 return;
             }
 
+            BlockState stateToBreak = level.getBlockState(targetPos);
+
+            level.playSound(null, targetPos, stateToBreak.getSoundType()
+                    .getHitSound(), SoundSource.BLOCKS, .8f, ((float) charge / CHARGE_REQUIRED) + 0.5f);
+
+            level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, targetPos, Block.getId(stateToBreak));
+
             charge++;
             level.destroyBlockProgress(breakerId, targetPos, Mth.clamp(charge * 10 / CHARGE_REQUIRED, 0, 9));
+            level.destroyBlockProgress(breakerId, worldPosition, Mth.clamp(charge * 10 / CHARGE_REQUIRED, 0, 9));
 
             if (charge >= CHARGE_REQUIRED)
                 detonate(targetPos);

@@ -34,7 +34,7 @@ public class BedrockBusterBlock extends DirectionalKineticBlock implements IBE<B
 
     @Override
     public boolean hasShaftTowards(LevelReader world, net.minecraft.core.BlockPos pos, BlockState state, Direction face) {
-        return face == state.getValue(FACING).getOpposite();
+        return false;
     }
 
     @Override

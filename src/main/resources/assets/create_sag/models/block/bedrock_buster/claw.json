@@ -1,6 +1,7 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
+	"render_type": "minecraft:cutout",
 	"texture_size": [32, 32],
 	"textures": {
 		"2": "create_sag:block/bedrock_buster/bedrock_buster_claw_mesh",
@@ -45,32 +46,33 @@
 		},
 		{
 			"from": [6, 19.45096, 21.78845],
-			"to": [10, 22.45096, 25.78845],
+			"to": [10, 20.45096, 25.78845],
 			"rotation": {"angle": -45, "axis": "x", "origin": [8, 20.95096, 23.78845]},
 			"faces": {
 				"north": {"uv": [4.5, 5, 3, 3], "rotation": 90, "texture": "#2"},
 				"east": {"uv": [3, 3, 4.5, 5], "rotation": 270, "texture": "#2"},
 				"south": {"uv": [3, 3, 4.5, 5], "rotation": 90, "texture": "#2"},
-				"west": {"uv": [3, 3, 4.5, 5], "rotation": 90, "texture": "#2"},
-				"up": {"uv": [0, 8, 2, 10], "rotation": 180, "texture": "#2"}
+				"west": {"uv": [3, 3, 4.5, 5], "rotation": 90, "texture": "#2"}
 			}
 		},
 		{
-			"from": [6, 20.7071, 17.57841],
-			"to": [10, 29.6149, 21.57841],
+			"from": [5, 18.7071, 17.57841],
+			"to": [11, 27.6149, 21.57841],
 			"rotation": {"angle": -45, "axis": "x", "origin": [8, 25.161, 19.57841]},
 			"faces": {
-				"east": {"uv": [0, 10, 4.4539, 12], "rotation": 90, "texture": "#2"},
-				"west": {"uv": [0, 10, 4.4539, 12], "rotation": 90, "texture": "#2"}
+				"east": {"uv": [9.5, 3, 13.9539, 5], "rotation": 90, "texture": "#2"},
+				"west": {"uv": [9.5, 3, 13.9539, 5], "rotation": 90, "texture": "#2"},
+				"down": {"uv": [4.5, 5, 7.5, 7], "texture": "#2"}
 			}
 		},
 		{
-			"from": [9.975, 20.7071, 17.57841],
-			"to": [6.075, 29.6149, 21.57841],
+			"from": [10.975, 18.7071, 17.57841],
+			"to": [5.075, 27.6149, 21.57841],
 			"rotation": {"angle": -45, "axis": "x", "origin": [8.025, 25.161, 19.57841]},
 			"faces": {
-				"east": {"uv": [0, 10, 4.4539, 12], "rotation": 90, "texture": "#2"},
-				"west": {"uv": [0, 10, 4.4539, 12], "rotation": 90, "texture": "#2"}
+				"east": {"uv": [9.5, 3, 13.9539, 5], "rotation": 90, "texture": "#2"},
+				"west": {"uv": [9.5, 3, 13.9539, 5], "rotation": 90, "texture": "#2"},
+				"down": {"uv": [4.5, 5, 7.5, 7], "texture": "#2"}
 			}
 		}
 	]
