@@ -57,3 +57,7 @@ Throws out as an entity like how packages do it. Looks like a cartoon bomb and e
 ## Steering Wheel
 
 Is actually a full block, has the wheel sticking out the front (or alternatively can be angled into the block via a wrench), and a shaft input at the bottom, and output on the back. The steering wheel takes in rotational power, and the player can drag and turn the wheel by holding right click, the shaft on the back will turn the direction of the wheel, and speed up closer to the power at the bottom the closer the wheel gets to reaching its maximum turn radius. The turn radius can be customized via a menu on the side of the block.
+
+## Bedrock Buster
+
+An expensive one-time-use drill-like block that can only mine bedrock. After 1 minute of full rotational power against a block of bedrock, the bedrock it was faced into will be destroyed in a large fiery explosion. Nothing caught in the explosion will drop, including the bedrock and drill. This drill does not work on a contraption and uses x16 stress.

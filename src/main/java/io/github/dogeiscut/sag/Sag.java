@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterEvents;
 import io.github.dogeiscut.sag.registry.*;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.core.HolderLookup;
@@ -51,6 +52,10 @@ public class Sag {
         REGISTRATE.registerEventListeners(modEventBus);
         modEventBus.addListener(Sag::gatherData);
 
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, SagConfig.SERVER_SPEC);
+
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(BedrockBusterEvents.class);
+
         SagCreativeModeTabs.register(modEventBus);
         SagDataComponents.register(modEventBus);
 
@@ -58,6 +63,7 @@ public class Sag {
         SagItems.register();
         SagBlocks.register();
         SagPackets.register();
+        SagBlockEntityTypes.register();
 
         modEventBus.addListener(SagSoundEvents::register);
     }

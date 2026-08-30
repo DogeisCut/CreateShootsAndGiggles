@@ -1,13 +1,13 @@
 package io.github.dogeiscut.sag.registry;
 
 import static com.simibubi.create.foundation.data.BlockStateGen.*;
+import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import dev.ryanhcode.sable.companion.SableCompanion;
-import dev.ryanhcode.sable.index.SableTags;
 import io.github.dogeiscut.sag.Sag;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.Registries;
@@ -15,9 +15,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.Tags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IceBlock;
+import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterBlock;
+import com.simibubi.create.api.stress.BlockStressValues;
 
 public class SagBlocks {
     private static final CreateRegistrate REGISTRATE = Sag.registrate();
@@ -91,6 +92,20 @@ public class SagBlocks {
             .blockstate(simpleCubeAll("pykrete"))
             .simpleItem()
             .lang("Pykrete")
+            .register();
+
+
+    public static final BlockEntry<BedrockBusterBlock> BEDROCK_BUSTER = REGISTRATE
+            .block("bedrock_buster", BedrockBusterBlock::new)
+            .initialProperties(SharedProperties::stone)
+            .addLayer(() -> RenderType::translucent)
+            .properties(p -> p.mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLACK).strength(50f, 1200f))
+            .transform(pickaxeOnly())
+            .blockstate(directionalBlockProvider(true))
+            .onRegister(block -> BlockStressValues.IMPACTS.register(block, () -> 16.0))
+            .item()
+            .transform(customItemModel())
+            .lang("Bedrock Buster")
             .register();
 
     private static BlockEntry<IceBlock> iceBlock(String id, String name) {

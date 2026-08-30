@@ -23,8 +23,8 @@ public class SagItems {
             //.model((ctx, prov) -> {})
             .register();
 
-    public static final ItemEntry<BombItem> BOMB = REGISTRATE.item("bomb", BombItem::new)
-            .register();
+//    public static final ItemEntry<BombItem> BOMB = REGISTRATE.item("bomb", BombItem::new)
+//            .register();
 
 
     public static void register() {
