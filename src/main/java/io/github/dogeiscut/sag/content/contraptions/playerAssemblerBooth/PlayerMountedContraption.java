@@ -27,6 +27,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Queue;
 
+// TODO: fix drills only working in one world direction
+// TODO: offset the entire riding contraption down half a block on the player somehow
+// TODO: model + polish
+
 public class PlayerMountedContraption extends Contraption {
 
     public CartAssemblerBlockEntity.CartMovementMode rotationMode;
