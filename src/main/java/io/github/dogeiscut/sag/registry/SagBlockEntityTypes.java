@@ -4,6 +4,7 @@ import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import io.github.dogeiscut.sag.Sag;
+import io.github.dogeiscut.sag.content.contraptions.playerAssemblerBooth.PlayerAssemblerBoothBlockEntity;
 import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterBlockEntity;
 import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterRenderer;
 import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterVisual;
@@ -23,6 +24,11 @@ public class SagBlockEntityTypes {
     public static final BlockEntityEntry<FreeformTransferTubeBlockEntity> FREEFORM_TRANSFER_TUBE = REGISTRATE
             .blockEntity("freeform_transfer_tube", FreeformTransferTubeBlockEntity::new)
             .validBlocks(SagBlocks.FREEFORM_TRANSFER_TUBE)
+            .register();
+
+    public static final BlockEntityEntry<PlayerAssemblerBoothBlockEntity> PLAYER_ASSEMBLER_BOOTH = REGISTRATE
+            .blockEntity("player_assembler_booth", PlayerAssemblerBoothBlockEntity::new)
+            .validBlocks(SagBlocks.PLAYER_ASSEMBLER_BOOTH)
             .register();
 
     public static void register() {

@@ -30,7 +30,7 @@ public class Sag {
     public static final String ID = "create_sag";
     public static final String NAME = "Create: Shoots and Giggles";
 
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     private static final StackWalker STACK_WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 

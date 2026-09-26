@@ -4,11 +4,17 @@ import static com.simibubi.create.foundation.data.BlockStateGen.*;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
 
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllTags;
+import com.simibubi.create.content.contraptions.mounted.CartAssemblerBlock;
+import com.simibubi.create.content.contraptions.mounted.CartAssemblerBlockItem;
+import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import io.github.dogeiscut.sag.Sag;
+import io.github.dogeiscut.sag.content.contraptions.playerAssemblerBooth.PlayerAssemblerBoothBlock;
 import io.github.dogeiscut.sag.content.logistics.freeformTransferTube.FreeformTransferTubeBlock;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +26,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IceBlock;
 import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterBlock;
 import com.simibubi.create.api.stress.BlockStressValues;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
 public class SagBlocks {
     private static final CreateRegistrate REGISTRATE = Sag.registrate();
@@ -95,6 +103,32 @@ public class SagBlocks {
             .lang("Pykrete")
             .register();
 
+    public static final BlockEntry<PlayerAssemblerBoothBlock.PlayerAnchorBlock> PLAYER_ANCHOR =
+            REGISTRATE.block("player_anchor", PlayerAssemblerBoothBlock.PlayerAnchorBlock::new)
+                    .initialProperties(SharedProperties::stone)
+                    .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
+                            .getExistingFile(p.modLoc("block/cart_assembler/" + c.getName()))))
+                    .register();
+
+    public static final BlockEntry<PlayerAssemblerBoothBlock> PLAYER_ASSEMBLER_BOOTH =
+            REGISTRATE.block("player_assembler_booth", PlayerAssemblerBoothBlock::new)
+                    .initialProperties(SharedProperties::stone)
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<FreeformTransferTubeBlock> FREEFORM_TRANSFER_TUBE = REGISTRATE.block("freeform_transfer_tube", FreeformTransferTubeBlock::new)
+            .initialProperties(SharedProperties::netheriteMetal)
+            .properties(p -> p)
+            .transform(axeOrPickaxe())
+            .blockstate((a, b) -> {})
+            .item()
+            .transform(customItemModel())
+            .lang("Freeform Transfer Tube")
+            .register();
 
     public static final BlockEntry<BedrockBusterBlock> BEDROCK_BUSTER = REGISTRATE.block("bedrock_buster", BedrockBusterBlock::new)
             .initialProperties(SharedProperties::stone)
@@ -108,16 +142,6 @@ public class SagBlocks {
             .item()
             .transform(customItemModel())
             .lang("Bedrock Buster")
-            .register();
-
-    public static final BlockEntry<FreeformTransferTubeBlock> FREEFORM_TRANSFER_TUBE = REGISTRATE.block("freeform_transfer_tube", FreeformTransferTubeBlock::new)
-            .initialProperties(SharedProperties::netheriteMetal)
-            .properties(p -> p)
-            .transform(axeOrPickaxe())
-            .blockstate((a, b) -> {})
-            .item()
-            .transform(customItemModel())
-            .lang("Freeform Transfer Tube")
             .register();
 
     private static BlockEntry<IceBlock> iceBlock(String id, String name) {
