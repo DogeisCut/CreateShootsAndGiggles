@@ -27,9 +27,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Queue;
 
-// TODO: fix drills only working in one world direction
+// TODO: fix drills and actors only working in one world direction (as if they were set to not rotate)
 // TODO: offset the entire riding contraption down half a block on the player somehow
 // TODO: model + polish
+// TODO: consider opening up all sides of the booth
 
 public class PlayerMountedContraption extends Contraption {
 
