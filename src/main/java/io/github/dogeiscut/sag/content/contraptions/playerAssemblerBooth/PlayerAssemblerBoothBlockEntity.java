@@ -58,7 +58,7 @@ public class PlayerAssemblerBoothBlockEntity extends SmartBlockEntity implements
         playerToAssemble = null;
 
         assert level != null;
-        for (Player player : level.getEntitiesOfClass(Player.class, new AABB(getBlockPos()))) {
+        for (Player player : level.getEntitiesOfClass(Player.class, new AABB(getBlockPos()).deflate(0.5))) {
             assembleNextTick(player);
             break;
         }
@@ -100,8 +100,7 @@ public class PlayerAssemblerBoothBlockEntity extends SmartBlockEntity implements
 
         PlayerMountedContraption contraption = new PlayerMountedContraption(mode);
         try {
-            if (!contraption.assemble(world, pos.above())) {
-                Sag.LOGGER.warn("Something horribly wrong went wrong with the assembly.");
+            if (!contraption.assemble(world, pos)) {
                 return;
             }
 
@@ -110,8 +109,6 @@ public class PlayerAssemblerBoothBlockEntity extends SmartBlockEntity implements
         } catch (AssemblyException e) {
             lastException = e;
             sendData();
-
-            Sag.LOGGER.warn("Something went wrong with the assembly: ", e);
 
             return;
         }
@@ -131,15 +128,13 @@ public class PlayerAssemblerBoothBlockEntity extends SmartBlockEntity implements
 
         if (contraption.containsBlockBreakers())
             award(AllAdvancements.CONTRAPTION_ACTORS);
-
-        Sag.LOGGER.info("According to my code, there SHOULD be a contraption here...");
     }
 
     protected void disassemble(Level world, BlockPos pos, Player player) {
         if (player.getPassengers()
                 .isEmpty())
             return;
-        Entity entity = player.getPassengers().get(0);
+        Entity entity = player.getPassengers().getFirst();
         if (!(entity instanceof OrientedContraptionEntity))
             return;
         disassemblePlayer(player);
@@ -183,7 +178,7 @@ public class PlayerAssemblerBoothBlockEntity extends SmartBlockEntity implements
             super((state, d) -> {
                 if (d.getAxis().isVertical())
                     return false;
-                return (d.getAxis() == Direction.Axis.X) == (state.getValue(PlayerAssemblerBoothBlock.FACING).getAxis() == Direction.Axis.X);
+                return (d.getAxis() == Direction.Axis.X) == (state.getValue(PlayerAssemblerBoothBlock.FACING).getAxis() == Direction.Axis.Z);
             });
         }
 

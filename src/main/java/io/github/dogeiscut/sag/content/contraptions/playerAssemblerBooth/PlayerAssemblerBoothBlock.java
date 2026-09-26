@@ -113,7 +113,7 @@ public class PlayerAssemblerBoothBlock extends Block implements SimpleWaterlogge
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
             return IBE.super.newBlockEntity(pos, state);
         }
         return null;
@@ -194,9 +194,17 @@ public class PlayerAssemblerBoothBlock extends Block implements SimpleWaterlogge
                                 @NotNull Block blockIn, @NotNull BlockPos fromPos, boolean isMoving) {
         if (worldIn.isClientSide)
             return;
-        boolean previouslyPowered = state.getValue(POWERED);
-        if (previouslyPowered != worldIn.hasNeighborSignal(pos))
-            worldIn.setBlock(pos, state.cycle(POWERED), Block.UPDATE_CLIENTS);
+
+        boolean isLower = state.getValue(HALF) == DoubleBlockHalf.LOWER;
+        BlockPos lowerPos = isLower ? pos : pos.below();
+        BlockPos upperPos = isLower ? pos.above() : pos;
+
+        boolean shouldBePowered = worldIn.hasNeighborSignal(lowerPos) || worldIn.hasNeighborSignal(upperPos);
+
+        if (state.getValue(POWERED) != shouldBePowered) {
+            worldIn.setBlock(pos, state.setValue(POWERED, shouldBePowered), Block.UPDATE_CLIENTS);
+        }
+
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
     }
 
