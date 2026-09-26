@@ -7,6 +7,8 @@ import io.github.dogeiscut.sag.Sag;
 import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterBlockEntity;
 import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterRenderer;
 import io.github.dogeiscut.sag.content.kinetics.bedrockBuster.BedrockBusterVisual;
+import io.github.dogeiscut.sag.content.logistics.freeformTransferTube.FreeformTransferTubeBlockEntity;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 
 public class SagBlockEntityTypes {
     private static final CreateRegistrate REGISTRATE = Sag.registrate();
@@ -16,6 +18,11 @@ public class SagBlockEntityTypes {
             .visual(() -> BedrockBusterVisual::new, false)
             .renderer(() -> BedrockBusterRenderer::new)
             .validBlocks(SagBlocks.BEDROCK_BUSTER)
+            .register();
+
+    public static final BlockEntityEntry<FreeformTransferTubeBlockEntity> FREEFORM_TRANSFER_TUBE = REGISTRATE
+            .blockEntity("freeform_transfer_tube", FreeformTransferTubeBlockEntity::new)
+            .validBlocks(SagBlocks.FREEFORM_TRANSFER_TUBE)
             .register();
 
     public static void register() {

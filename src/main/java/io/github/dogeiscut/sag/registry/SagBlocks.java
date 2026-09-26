@@ -9,6 +9,7 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import io.github.dogeiscut.sag.Sag;
+import io.github.dogeiscut.sag.content.logistics.freeformTransferTube.FreeformTransferTubeBlock;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -107,6 +108,16 @@ public class SagBlocks {
             .item()
             .transform(customItemModel())
             .lang("Bedrock Buster")
+            .register();
+
+    public static final BlockEntry<FreeformTransferTubeBlock> FREEFORM_TRANSFER_TUBE = REGISTRATE.block("freeform_transfer_tube", FreeformTransferTubeBlock::new)
+            .initialProperties(SharedProperties::netheriteMetal)
+            .properties(p -> p)
+            .transform(axeOrPickaxe())
+            .blockstate((a, b) -> {})
+            .item()
+            .transform(customItemModel())
+            .lang("Freeform Transfer Tube")
             .register();
 
     private static BlockEntry<IceBlock> iceBlock(String id, String name) {
