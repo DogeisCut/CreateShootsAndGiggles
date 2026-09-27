@@ -6,7 +6,10 @@ import com.simibubi.create.foundation.block.IBE;
 import io.github.dogeiscut.sag.registry.SagBlockEntityTypes;
 import io.github.dogeiscut.sag.registry.SagBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -15,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FreeformTransferTubeBlock extends Block implements IWrenchable, IBE<FreeformTransferTubeBlockEntity> {
@@ -44,20 +48,35 @@ public class FreeformTransferTubeBlock extends Block implements IWrenchable, IBE
     }
 
     @Override
-    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+    public @Nullable BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
         OptionalDirection primary = OptionalDirection.NONE;
         OptionalDirection secondary = OptionalDirection.NONE;
 
-//        BlockPos clickedBlockPos = context.getClickedPos().relative(context.getClickedFace().getOpposite());
-//        BlockState clickedBlock = context.getLevel().getBlockState(clickedBlockPos);
+        BlockPos clickedBlockPos = context.getClickedPos().relative(context.getClickedFace().getOpposite());
+        BlockState clickedBlock = context.getLevel().getBlockState(clickedBlockPos);
 
-        // this is a pure function, probably don't want to do that here
-//        if (clickedBlock.is(SagBlocks.FREEFORM_TRANSFER_TUBE.get())) {
-//            primary = OptionalDirection.of(context.getClickedFace().getOpposite());
-//            context.getLevel().setBlock(clickedBlockPos, clickedBlock.setValue(SECONDARY_CONNECTION, OptionalDirection.of(context.getClickedFace())), Block.UPDATE_NONE);
-//        }
+        if (clickedBlock.is(SagBlocks.FREEFORM_TRANSFER_TUBE.get())) {
+            secondary = OptionalDirection.of(context.getClickedFace().getOpposite());
+        }
 
         return this.defaultBlockState().setValue(PRIMARY_CONNECTION, primary).setValue(SECONDARY_CONNECTION, secondary);
+    }
+
+    @Override
+    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, @NotNull ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+
+        OptionalDirection secondary = state.getValue(SECONDARY_CONNECTION);
+        Direction dir = secondary.from();
+        if (dir != null) {
+            BlockPos neighborPos = pos.relative(dir);
+            BlockState neighborState = level.getBlockState(neighborPos);
+
+            if (neighborState.is(SagBlocks.FREEFORM_TRANSFER_TUBE.get())) {
+                OptionalDirection comingFrom = OptionalDirection.of(dir.getOpposite());
+                level.setBlock(neighborPos, neighborState.setValue(PRIMARY_CONNECTION, comingFrom), Block.UPDATE_ALL);
+            }
+        }
     }
 
     @Override
